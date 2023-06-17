@@ -1,5 +1,6 @@
-let sideLength = 100;
+let sideLength = 16;
 const container = document.querySelector(".container");
+const dimensionButton = document.querySelector("#dimension-button");
 
 const makePixels = () => {
   const pixel = document.createElement("div");
@@ -10,14 +11,13 @@ const makePixels = () => {
     }px; background-color: black;`
   );
   pixel.setAttribute("class", "pixels");
-  return pixel
+  return pixel;
 };
 
 const fillContainerWithSquares = (sideLength, makePixels) => {
   for (i = 0; i < sideLength * sideLength; i++) {
     container.appendChild(makePixels.cloneNode());
   }
-
   addHoverListenerToSquares();
 };
 
@@ -32,13 +32,30 @@ const addHoverListenerToSquares = () => {
   }
 };
 
-const dimensionButton = document.querySelector("#dimension-button");
+const clearContainer = () => {
+  container.replaceChildren();
+};
 
-// const handleDimensionButtonClick = () =>{
-//   sideLength= Number(prompt("Enter length of side in pixels (max 100)"))
-//   if (sideLength>100){
-//     return handleDimensionButtonClick
-//   }
+const showPrompt = () => {
+  sideLength = Number(window.prompt("Enter dimensions (max 100)"));
+  if (isNaN(sideLength)) {
+    return showPrompt();
+  }
 
-//   return makeSquares(sideLength)
-// }
+  if (sideLength > 100 || sideLength===0) {
+    return showPrompt();
+  }
+
+  
+
+  changeDimensions();
+};
+
+const changeDimensions = () => {
+  clearContainer();
+  fillContainerWithSquares(sideLength, makePixels());
+};
+
+dimensionButton.addEventListener("click", showPrompt);
+
+fillContainerWithSquares(sideLength, makePixels());
