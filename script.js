@@ -8,8 +8,8 @@ const makePixels = () => {
   const pixel = document.createElement("div");
   pixel.setAttribute(
     "style",
-    `height:${800 / sideLength}px; width: ${
-      800 / sideLength
+    `height:${600 / sideLength}px; width: ${
+      600 / sideLength
     }px; background-color: whitesmoke;`
   );
   pixel.setAttribute("class", "pixels");
@@ -58,23 +58,12 @@ const addListenersToPixels = () => {
   }
 };
 
-// const changeColor = (e) => {
-//   e.target.style.backgroundColor = "purple";
-// };
-
-// const addHoverListenerToPixels = () => {
-//   const pixels = document.getElementsByClassName("pixels");
-//   for (item of pixels) {
-//     item.addEventListener("mouseover", changeColor);
-//   }
-// };
-
 const clearContainer = () => {
   container.replaceChildren();
 };
 
 const showPrompt = () => {
-  sideLength = Number(window.prompt("Enter dimensions (max 100)"));
+  sideLength = Number(window.prompt("Pixels per side (max 100) "));
   if (isNaN(sideLength)) {
     return showPrompt();
   }
@@ -97,8 +86,18 @@ const randomColorButton = document.querySelector("#randomColor");
 const eraseButton = document.querySelector("#erase");
 const clear = document.querySelector("#clear");
 
-randomColorButton.addEventListener("click", () => (mode = "rainbow"));
-eraseButton.addEventListener("click", () => (mode = "erase"));
+randomColorButton.addEventListener("click", () => {
+  mode = "rainbow";
+  randomColorButton.style.backgroundColor = "#d0d0d0";
+  eraseButton.style.backgroundColor = "#ececec";
+  input.style.backgroundColor = "#ececec";
+});
+eraseButton.addEventListener("click", () => {
+  mode = "erase";
+  eraseButton.style.backgroundColor = "#d0d0d0";
+  randomColorButton.style.backgroundColor = "#ececec";
+  input.style.backgroundColor = "#ececec";
+});
 clear.addEventListener("click", () => handleClear());
 
 const handleClear = () => {
@@ -107,6 +106,13 @@ const handleClear = () => {
 input.addEventListener("change", (e) => {
   mode = "default";
   drawColor = e.target.value;
+});
+
+input.addEventListener("click", () => {
+  mode = "default";
+  eraseButton.style.backgroundColor = "#ececec";
+  randomColorButton.style.backgroundColor = "#ececec";
+  input.style.backgroundColor = "#d0d0d0";
 });
 
 fillContainerWithPixels(sideLength, makePixels());
